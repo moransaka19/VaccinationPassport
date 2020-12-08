@@ -9,10 +9,10 @@ namespace Domain
         public float WBS { get; set; }
         public float Eosinophill { get; set; }
         public float Neutrophill { get; set; }
-        public IEnumerable<Passport> Passports { get; set; }
+        public IEnumerable<Record> Passports { get; set; }
         public BloodTest()
         {
-            Passports = new List<Passport>();
+            Passports = new List<Record>();
         }
     }
 }

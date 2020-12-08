@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public class Pet : BaseEntity
+    public class PetPassport : BaseEntity
     {
         public string Name { get; set; }
         public DateTime DOB { get; set; }
@@ -15,11 +15,11 @@ namespace Domain
         public Collar Collar { get; set; }
         public int IdealBloodTestId { get; set; }
         public BloodTest IdealBloodTest { get; set; }
-        public IEnumerable<Passport> Passports { get; set; }
+        public IEnumerable<Record> Passports { get; set; }
 
-        public Pet()
+        public PetPassport()
         {
-            Passports = new List<Passport>();
+            Passports = new List<Record>();
         }
     }
 }

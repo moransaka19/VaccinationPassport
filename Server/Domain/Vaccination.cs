@@ -7,10 +7,10 @@ namespace Domain
     public class Vaccination : BaseEntity
     {
         public string Name { get; set; }
-        public IEnumerable<Passport> Passports { get; set; }
+        public IEnumerable<Record> Passports { get; set; }
         public Vaccination()
         {
-            Passports = new List<Passport>();
+            Passports = new List<Record>();
         }
     }
 }

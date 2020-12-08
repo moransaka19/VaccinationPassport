@@ -12,11 +12,11 @@ namespace Domain
         public int RoleId { get; set; }
         public Role Role { get; set; }
 
-        public IEnumerable<Pet> Pets { get; set; }
+        public IEnumerable<PetPassport> Pets { get; set; }
 
         public User()
         {
-            Pets = new List<Pet>();
+            Pets = new List<PetPassport>();
         }
     }
 }
