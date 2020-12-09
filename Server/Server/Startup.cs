@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
+using Autofac;
 using AutoMapper;
 using Common;
 using DAL.Contexts;
@@ -96,6 +97,12 @@ namespace Server
 
         }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            DAL.Bootstrapper.Bootstrap(builder);
+            BLL.Bootstrapper.Bootstrap(builder);
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -107,6 +114,8 @@ namespace Server
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

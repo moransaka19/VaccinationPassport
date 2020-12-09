@@ -8,5 +8,7 @@ namespace DAL.Interfaces
 {
     public interface IRoleRepository : IBaseRepository<Role>
     {
+        Role GetDoctor();
+        Role GetOwner();
     }
 }

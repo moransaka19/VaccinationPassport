@@ -1,0 +1,61 @@
+﻿using BLL.Interfaces;
+using DAL.Interfaces;
+using Domain;
+using System;
+using System.Linq;
+using System.Web.Helpers;
+
+namespace BLL
+{
+    public class UserService : IUserService
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
+
+        public UserService(IUserRepository userRepository,
+            IRoleRepository roleRepository)
+        {
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+        }
+        
+        public bool IsLoginTaken(string login)
+        {
+            return _userRepository.GetAll(u => u.Login == login).FirstOrDefault() != null;
+        }
+
+        public bool IsNameTaken(string name)
+        {
+            return _userRepository.GetAll(u => u.Name == name).FirstOrDefault() != null;
+        }
+
+        public void Register(string login, string name, string password, bool isDoctor)
+        {
+            var hashPassword = HashPassword(password);
+            Role role = isDoctor ? _roleRepository.GetDoctor() : _roleRepository.GetOwner();
+          
+            _userRepository.Add(new User()
+            {
+                Login = login,
+                Name = name,
+                Password = hashPassword,
+                Role = role
+            });
+        }
+
+        public User Authenticate(User model)
+        {
+            var user = _userRepository.GetAll(x => x.Login == model.Login)
+               .SingleOrDefault();
+
+            if (user == null) return null;
+
+            return Crypto.VerifyHashedPassword(user.Password, model.Password) ? user : null;
+        }
+
+        private string HashPassword(string rawPassword)
+        {
+            return Crypto.HashPassword(rawPassword);
+        }
+    }
+}
