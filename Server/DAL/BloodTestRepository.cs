@@ -16,5 +16,12 @@ namespace DAL
             : base(context)
         {
         }
+
+        public BloodTest AddBloodTest(BloodTest item)
+        {
+            base.Add(item);
+
+            return item;
+        }
     }
 }

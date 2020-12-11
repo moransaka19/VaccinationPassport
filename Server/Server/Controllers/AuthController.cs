@@ -90,14 +90,6 @@ namespace Server.Controllers
         [HttpPost("logout")]
         public IActionResult Logout() 
         {
-            if (!Request.Cookies.TryGetValue("refreshToken", out var requestRefreshToken))
-            {
-                return BadRequest(new ErrorMessageModel()
-                {
-                    Message = "token was not found"
-                });
-            }
-
             Response.Cookies.Delete("accessToken");
 
             return Ok();

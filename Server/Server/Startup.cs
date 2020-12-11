@@ -34,7 +34,10 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingDateTimeParse());
+            });
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
@@ -62,10 +65,17 @@ namespace Server
                         ValidateLifetime = true,
 
                         IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
+
+                        //RoleClaimType = "role"
                     };
                     option.Events = new JwtBearerEvents
                     {
+                        OnForbidden = context =>
+                        {
+                            Console.WriteLine(5);
+                            return Task.CompletedTask;
+                        },
                         OnMessageReceived = context =>
                         {
                             if (context.Request.Cookies.ContainsKey("accessToken"))

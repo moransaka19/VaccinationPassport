@@ -8,5 +8,7 @@ namespace DAL.Interfaces
 {
     public interface IUserRepository : IBaseRepository<User>
     {
+        void AddPetPassport(User owner, PetPassport pet);
+        IEnumerable<PetPassport> GetAllPets(int ownerId);
     }
 }

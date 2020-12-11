@@ -4,14 +4,16 @@ using DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20201211093406_InsertRoles")]
+    partial class InsertRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,13 +64,13 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CollarId")
+                    b.Property<int>("CollarId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("IdealBloodTestId")
+                    b.Property<int>("IdealBloodTestId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -218,11 +220,15 @@ namespace DAL.Migrations
                 {
                     b.HasOne("Domain.Collar", "Collar")
                         .WithMany()
-                        .HasForeignKey("CollarId");
+                        .HasForeignKey("CollarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.BloodTest", "IdealBloodTest")
                         .WithMany()
-                        .HasForeignKey("IdealBloodTestId");
+                        .HasForeignKey("IdealBloodTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.User", "User")
                         .WithMany("Pets")

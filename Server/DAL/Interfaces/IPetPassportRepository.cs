@@ -8,5 +8,7 @@ namespace DAL.Interfaces
 {
     public interface IPetPassportRepository : IBaseRepository<PetPassport>
     {
+        void UpdateCollar(Collar collar, int petId);
+        void UpdateIdealBloodTest(PetPassport pet, BloodTest blood);
     }
 }

@@ -17,12 +17,12 @@ namespace DAL
 
         public Role GetDoctor()
         {
-            return baseQuery.Where(d => d.Name == "doctor").FirstOrDefault();
+            return GetAll(d => d.Name == "doctor").FirstOrDefault();
         }
 
         public Role GetOwner()
         {
-            return baseQuery.Where(d => d.Name == "owner").FirstOrDefault();
+            return GetAll(d => d.Name == "owner").FirstOrDefault();
         }
     }
 }

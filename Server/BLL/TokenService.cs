@@ -41,8 +41,8 @@ namespace BLL
             var roles = _roleRepository.GetAll();
 
             claims.AddRange(roles
-                .Where(role => user.Role == role)
-                .Select(role => new Claim("role", role.ToString())));
+                .Where(role => user.Role.Id == role.Id)
+                .Select(role => new Claim("role", role.Name)));
 
             var token = new JwtSecurityToken(authParams.Issuer,
                 authParams.Audience,

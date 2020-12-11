@@ -14,6 +14,25 @@ namespace DAL.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PetPassport>().HasMany(p => p.Passports).WithOne(p => p.Pet).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Role>().HasData(new[] {
+                new Role()
+                {
+                    Id = 1,
+                    Name = "admin"
+                },
+                new Role()
+                {
+                    Id = 2,
+                    Name = "doctor"
+                },
+                new Role()
+                {
+                    Id = 3,
+                    Name = "owner"
+                }
+            });
+
             base.OnModelCreating(modelBuilder);
         }
 

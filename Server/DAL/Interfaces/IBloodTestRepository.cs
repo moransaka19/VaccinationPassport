@@ -8,5 +8,6 @@ namespace DAL.Interfaces
 {
     public interface IBloodTestRepository : IBaseRepository<BloodTest>
     {
+        BloodTest AddBloodTest(BloodTest item);
     }
 }
