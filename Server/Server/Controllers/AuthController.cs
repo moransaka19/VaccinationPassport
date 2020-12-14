@@ -51,8 +51,8 @@ namespace Server.Controllers
                 });
             }
 
-            _userService.Register(model.Login, model.Name, model.Password, model.IsDoctor);
-            var accessToken = _tokenService.GenerateJwtToken(_mapper.Map<User>(model));
+            var user = _userService.Register(model.Login, model.Name, model.Password, model.IsDoctor);
+            var accessToken = _tokenService.GenerateJwtToken(user);
 
             Response.Cookies.Append("accessToken", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 

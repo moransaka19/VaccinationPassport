@@ -30,18 +30,21 @@ namespace BLL
             return _userRepository.GetAll(u => u.Name == name).FirstOrDefault() != null;
         }
 
-        public void Register(string login, string name, string password, bool isDoctor)
+        public User Register(string login, string name, string password, bool isDoctor)
         {
             var hashPassword = HashPassword(password);
-            Role role = isDoctor ? _roleRepository.GetDoctor() : _roleRepository.GetOwner();
-          
-            _userRepository.Add(new User()
+            var role = isDoctor ? _roleRepository.GetDoctor() : _roleRepository.GetOwner();
+            var user = new User()
             {
                 Login = login,
                 Name = name,
                 Password = hashPassword,
                 Role = role
-            });
+            };
+
+            _userRepository.Add(user);
+
+            return user;
         }
 
         public User Authenticate(User model)
