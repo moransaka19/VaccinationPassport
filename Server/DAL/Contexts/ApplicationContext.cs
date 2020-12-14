@@ -33,6 +33,52 @@ namespace DAL.Contexts
                 }
             });
 
+            modelBuilder.Entity<Vaccination>().HasData(new[] {
+                new Vaccination()
+                {
+                    Id = 1,
+                    Name = "hepatitis"
+                },
+                new Vaccination()
+                {
+                    Id = 2,
+                    Name = "enteritis"
+                },
+                new Vaccination()
+                {
+                    Id = 3,
+                    Name = "leptospirosis"
+                },
+                new Vaccination()
+                {
+                    Id = 4,
+                    Name = "rabies"
+                }
+            });
+
+            modelBuilder.Entity<VaccinationState>().HasData(new[] {
+                new VaccinationState()
+                {
+                    Id = 1,
+                    Name = "start"
+                },
+                new VaccinationState()
+                {
+                    Id = 2,
+                    Name = "finish"
+                },
+                new VaccinationState()
+                {
+                    Id = 3,
+                    Name = "process"
+                },
+                new VaccinationState()
+                {
+                    Id = 4, 
+                    Name = "fail"
+                }
+            });
+
             base.OnModelCreating(modelBuilder);
         }
 
