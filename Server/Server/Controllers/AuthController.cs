@@ -80,6 +80,20 @@ namespace Server.Controllers
             return Ok();
         }
 
+        [HttpGet("current")]
+        public IActionResult GetCurrentUser()
+        {
+            if (!(Request.Cookies.TryGetValue("accessToken", out var requestAccessToken)))
+            {
+                return Unauthorized(new ErrorMessageModel()
+                {
+                    Message = "Token is not valid"
+                });
+            }
+
+            return Ok(_userService.GetCurrentUser(_tokenService.GetCurrentToken(requestAccessToken)));
+        }
+
         [HttpPost("is-login-taken")]
         [AllowAnonymous]
         public bool IsLoginTaken([FromBody] IsLoginTakenModel model) 
@@ -87,7 +101,7 @@ namespace Server.Controllers
             return _userService.IsLoginTaken(model.Login);
         }
 
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         public IActionResult Logout() 
         {
             Response.Cookies.Delete("accessToken");

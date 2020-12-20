@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain;
 using Server.Models.Auth;
+using Server.Models.Owner;
 using Server.Models.PetPassport;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,9 @@ namespace Server.Mapper
             CreateMap<CreatePetPassportModel, PetPassport>()
                 .ReverseMap();
             CreateMap<UpdateIdealBloodTestModel, BloodTest>()
+                .ReverseMap();
+            CreateMap<OwnerModel, User>()
+                .ForMember(dst => dst.Name , opt => opt.MapFrom(src => src.Username))
                 .ReverseMap();
         }
     }

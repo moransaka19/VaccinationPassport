@@ -8,5 +8,6 @@ namespace BLL.Interfaces
     public interface IOwnerService
     {
         void AddPet(int petId, User owner);
+        IEnumerable<User> GetAllOwners();
     }
 }

@@ -25,5 +25,11 @@ namespace BLL
 
             _userRepository.AddPetPassport(owner, pet);
         }
+
+        public IEnumerable<User> GetAllOwners()
+        {
+
+            return _userRepository.GetAll(u => u.Role.Name == "owner");
+        }
     }
 }
