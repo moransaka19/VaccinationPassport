@@ -25,6 +25,8 @@ namespace Server.Mapper
             CreateMap<OwnerModel, User>()
                 .ForMember(dst => dst.Name , opt => opt.MapFrom(src => src.Username))
                 .ReverseMap();
+            CreateMap<User, CurrentUser>()
+                .ReverseMap();
         }
     }
 

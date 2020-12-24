@@ -1,13 +1,19 @@
-﻿import { Component } from '@angular/core';
+﻿import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { error } from 'protractor';
+import { Observable } from 'rxjs';
+import { first, timeout } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
-import { User } from '../_models';
+import { Test, User } from '../_models';
+import { CurrentUser } from '../_models/currentUser';
 import { AccountService } from '../_services';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
-    user: User;
 
-    constructor(private accountService: AccountService) {
-        this.user = this.accountService.getUserValue();
+    constructor() {
+        
     }
 }

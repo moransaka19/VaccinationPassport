@@ -31,6 +31,13 @@ namespace Server.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok(new Test{ Id = 1, TestName = "test", TestCur = "test"});
+        }
+
         [HttpPost("registration")]
         [AllowAnonymous]
         public IActionResult Registration([FromBody] RegisterModel model)

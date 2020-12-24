@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -32,17 +32,10 @@ export class AddEditComponent implements OnInit {
         }
 
         this.form = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
+            login: ['', Validators.required],
             username: ['', Validators.required],
             password: ['', passwordValidators]
         });
-
-        if (!this.isAddMode) {
-            this.accountService.getById(this.id)
-                .pipe(first())
-                .subscribe(x => this.form.patchValue(x));
-        }
     }
 
     // convenience getter for easy access to form fields
@@ -62,8 +55,6 @@ export class AddEditComponent implements OnInit {
         this.loading = true;
         if (this.isAddMode) {
             this.createUser();
-        } else {
-            this.updateUser();
         }
     }
 
@@ -82,18 +73,18 @@ export class AddEditComponent implements OnInit {
             });
     }
 
-    private updateUser() {
-        this.accountService.update(this.id, this.form.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['../../'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                }
-            });
-    }
+    // private updateUser() {
+    //     this.accountService.update(this.id, this.form.value)
+    //         .pipe(first())
+    //         .subscribe({
+    //             next: () => {
+    //                 this.alertService.success('Update successful', { keepAfterRouteChange: true });
+    //                 this.router.navigate(['../../'], { relativeTo: this.route });
+    //             },
+    //             error: error => {
+    //                 this.alertService.error(error);
+    //                 this.loading = false;
+    //             }
+    //         });
+    // }
 }

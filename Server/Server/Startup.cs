@@ -11,7 +11,9 @@ using Common;
 using DAL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -95,10 +97,11 @@ namespace Server
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000")
+                        builder.WithOrigins("http://localhost:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
+
                     });
             });
 
@@ -121,7 +124,11 @@ namespace Server
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCookiePolicy();
+
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseRouting();
 

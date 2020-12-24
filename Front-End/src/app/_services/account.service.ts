@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import { User } from '../_models';
+import { Register, User } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -19,15 +19,8 @@ export class AccountService {
         
     }
     
-    getUserValue(){
-        this.user = this.getCurrentDoctor();
-        this.user.subscribe(u => this.currentUser = u).unsubscribe();
-
-        return this.currentUser;
-    }
-    
-    private getCurrentDoctor() {
-        return this.http.get<User>(`${environment.apiUrl}/current`);
+    getCurrent() {
+        return this.http.get<User>(`${environment.apiUrl}/auth/current`);
     }
 
     login(login, password) {
@@ -43,8 +36,9 @@ export class AccountService {
         this.router.navigate(['/account/login']);
     }
 
-    register(user: User) {
-        return this.http.post(`${environment.apiUrl}/auth/registration`, user);
+    register(user: Register) {
+        const url = this.http.post(`${environment.apiUrl}/auth/registration`, user);
+        return url;
     }
 
 }
