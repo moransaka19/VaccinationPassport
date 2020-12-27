@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
     constructor(private accountService: AccountService, private router: Router) {
         this.user = this.accountService.getCurrent();
+        console.log(localStorage.getItem('accessToken'));
     }
 
     ngOnInit(){

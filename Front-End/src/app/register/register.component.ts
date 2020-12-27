@@ -18,11 +18,5 @@ export class RegisterComponent implements OnInit {
 
     OnSubmit() {
         this.accountService.register(this.registerModel)
-        .subscribe(
-            data => console.log('Success: ', data),
-            error => console.log('Error: ', error)
-        );
-        
-        this.router.navigate(['']);
     }
 }

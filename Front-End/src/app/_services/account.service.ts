@@ -2,7 +2,7 @@
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Register, User } from '../_models';
@@ -20,25 +20,32 @@ export class AccountService {
     }
     
     getCurrent() {
-        return this.http.get<User>(`${environment.apiUrl}/auth/current`);
+        const headers = {'Authorization': 'Bearer ' + localStorage.getItem('accessToken')};
+        return this.http.get<User>(`${environment.apiUrl}/auth/current`, { headers });
     }
 
     login(login, password) {
-        return this.http.post(`${environment.apiUrl}/auth/login`, { login, password });
+        return this.http.post(`${environment.apiUrl}/auth/login`, { login, password })
+        .pipe(tap(val => this.setSession(val)));
     }
 
     isLoginTaken(login){
-        return this.http.post(`${environment.apiUrl}/auth/is-login-taken`, { login });
+        return this.http.post(`${environment.apiUrl}/auth/is-login-taken`, { login })
+        .subscribe(res => this.setSession(res))
+        .unsubscribe();
     }
 
     logout() {
-        this.http.get(`${environment.apiUrl}/auth/logout`);
-        this.router.navigate(['/account/login']);
+        localStorage.removeItem('accessToken');
     }
 
     register(user: Register) {
-        const url = this.http.post(`${environment.apiUrl}/auth/registration`, user);
-        return url;
+        return this.http.post(`${environment.apiUrl}/auth/registration`, user)
+        .pipe(tap(val => this.setSession(val)));
+    }
+
+    private setSession(authResult){
+        localStorage.setItem('accessToken', authResult.token);
     }
 
 }
