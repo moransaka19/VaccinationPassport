@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
     OnSubmit(){
       this.accountService.login(this.loginModel.login, this.loginModel.password)
       .subscribe(
-        token => {
-          console.log('Authorization success', localStorage.getItem('accessToken'));
+        accessToken => {
+          console.log('Authorization success');
           this.router.navigate(['/home']);
         }, 
         error => console.log('Error: ', error)
