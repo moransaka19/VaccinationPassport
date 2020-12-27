@@ -53,8 +53,10 @@ namespace BLL
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public JwtSecurityToken GetCurrentToken(string token)
+        public JwtSecurityToken GetCurrentToken(string accessToken)
         {
+            var token = accessToken.Split(" ")[1];
+
             return new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
         }
     }

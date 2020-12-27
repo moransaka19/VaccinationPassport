@@ -14,6 +14,7 @@ using Server.Models.Auth;
 
 namespace Server.Controllers
 {
+    [Authorize]
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -35,11 +36,11 @@ namespace Server.Controllers
         [HttpGet("test")]
         public IActionResult Test()
         {
-            return Ok(new Test{ Id = 1, TestName = "test", TestCur = "test"});
+            return Ok(new Test { Id = 1, TestName = "test", TestCur = "test" });
         }
 
-        [HttpPost("registration")]
         [AllowAnonymous]
+        [HttpPost("registration")]
         public IActionResult Registration([FromBody] RegisterModel model)
         {
             if (_userService.IsLoginTaken(model.Login))
@@ -59,17 +60,17 @@ namespace Server.Controllers
             }
 
             var user = _userService.Register(model.Login, model.Name, model.Password, model.IsDoctor);
-            var accessToken = _tokenService.GenerateJwtToken(user);
+            var accessToken = new AccessToken() { Token = _tokenService.GenerateJwtToken(user) };
 
-            Response.Cookies.Append("accessToken", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            //Response.Cookies.Append("accessToken", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
 
-            return Ok();
+            return Ok(accessToken);
         }
 
-        [HttpPost("login")]
         [AllowAnonymous]
-        public IActionResult Login([FromBody] LoginModel model) 
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginModel model)
         {
             var user = _userService.Authenticate(_mapper.Map<User>(model));
 
@@ -81,16 +82,17 @@ namespace Server.Controllers
                 });
             }
 
-            var accessToken = _tokenService.GenerateJwtToken(user);
-            Response.Cookies.Append("accessToken", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            var accessToken = new AccessToken() { Token = _tokenService.GenerateJwtToken(user) };
 
-            return Ok();
+            //Response.Cookies.Append("accessToken", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+            return Ok(accessToken);
         }
 
         [HttpGet("current")]
         public IActionResult GetCurrentUser()
         {
-            if (!(Request.Cookies.TryGetValue("accessToken", out var requestAccessToken)))
+            if (!(Request.Headers.TryGetValue("Authorization", out var requestAccessToken)))
             {
                 return Unauthorized(new ErrorMessageModel()
                 {
@@ -101,15 +103,15 @@ namespace Server.Controllers
             return Ok(_userService.GetCurrentUser(_tokenService.GetCurrentToken(requestAccessToken)));
         }
 
-        [HttpPost("is-login-taken")]
         [AllowAnonymous]
-        public bool IsLoginTaken([FromBody] IsLoginTakenModel model) 
+        [HttpPost("is-login-taken")]
+        public bool IsLoginTaken([FromBody] IsLoginTakenModel model)
         {
             return _userService.IsLoginTaken(model.Login);
         }
 
         [HttpGet("logout")]
-        public IActionResult Logout() 
+        public IActionResult Logout()
         {
             Response.Cookies.Delete("accessToken");
 
